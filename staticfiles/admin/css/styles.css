@@ -1,0 +1,175 @@
+:root {
+    --primary: #79aec8;
+    --secondary: #417690;
+    --accent: #f5dd5d;
+    --primary-fg: #fff;
+    --body-fg: #333;
+    --body-bg: #fff;
+    --body-quiet-color: #666;
+    --body-loud-color: #000;
+    --header-color: #ffc;
+    --header-branding-color: var(--accent);
+    --header-bg: var(--secondary);
+    --header-link-color: var(--primary-fg);
+    --breadcrumbs-fg: #c4dce8;
+    --breadcrumbs-link-fg: var(--body-bg);
+    --breadcrumbs-bg: #264b5d;
+    --link-fg: #417893;
+    --link-hover-color: #036;
+    --link-selected-fg: var(--secondary);
+    --hairline-color: #e8e8e8;
+    --border-color: #ccc;
+    --error-fg: #ba2121;
+    --message-success-bg: #4caf50;;
+    --message-warning-bg: #ffc;
+    --message-error-bg: #ffefef;
+    --darkened-bg: #f8f8f8;
+    --selected-bg: #e4e4e4;
+    --selected-row: #ffc;
+    --button-fg: #fff;
+    --button-bg: var(--secondary);
+    --button-hover-bg: #205067;
+    --default-button-bg: #205067;
+    --default-button-hover-bg: var(--secondary);
+    --close-button-bg: #747474;
+    --close-button-hover-bg: #333;
+    --delete-button-bg: #ba2121;
+    --delete-button-hover-bg: #a41515;
+    --object-tools-fg: var(--button-fg);
+    --object-tools-bg: var(--close-button-bg);
+    --object-tools-hover-bg: var(--close-button-hover-bg);
+    --font-family-primary: "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-monospace: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+/* Genel stil ayarları */
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 0.875rem;
+    font-family: var(--font-family-primary);
+    color: var(--body-fg);
+    background: var(--body-bg);
+}
+
+/* Başlık */
+h1 {
+    color: var(--header-branding-color);
+    background-color: var(--header-bg);
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid var(--hairline-color);
+    margin: 0;
+}
+
+/* Arama formu */
+form {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: var(--darkened-bg);
+}
+
+label {
+    font-weight: bold;
+    color: var(--body-loud-color);
+}
+
+input[type="text"] {
+    padding: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    width: 200px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+
+button[type="submit"],
+button[type="button"] {
+    padding: 5px 10px;
+    font-weight: bold;
+    color: var(--button-fg);
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0;
+}
+
+button[type="submit"]:hover,
+button[type="button"]:hover {
+    background-color: var(--button-hover-bg);
+}
+
+/* Tablo stilleri */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: var(--header-bg);
+    color: var(--header-link-color);
+}
+
+td {
+    color: var(--body-fg);
+}
+
+/* Ping durumu */
+.ping-status {
+    
+    font-weight: bold;
+}
+.ping-loading {
+    color: orange;
+}
+.ping-yes {
+    color: var(--message-success-bg);
+}
+
+.ping-no {
+    color: var(--delete-button-bg);
+}
+
+.ping-unknown {
+    color: var(--body-quiet-color);
+}
+
+/* Düzenle linki */
+a {
+    color: var(--link-fg);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+a:visited {
+    color: var(--link-selected-fg);
+}
+
+/* Toplu ping testi ve düğmeler */
+.ping-button {
+    padding: 5px 10px;
+    font-weight: bold;
+    color: var(--button-fg);
+    background-color: var(--button-bg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ping-button:hover {
+    background-color: var(--button-hover-bg);
+}

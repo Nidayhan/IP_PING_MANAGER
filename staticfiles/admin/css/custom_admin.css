@@ -1,0 +1,67 @@
+/* Modal için arka plan rengi ve diğer stil ayarları */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    background-color: #333; /* Karanlık arka plan */
+    border: 1px solid #444; /* Karanlık kenar rengi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .modal-content {
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: #444; /* Karanlık içerik arka planı */
+    color: #fff; /* Yazı rengi */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .close {
+    color: #fff; /* Kapatma butonunun rengi */
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #ddd; /* Kapatma butonunun hover rengi */
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555; /* Karanlık sınır rengi */
+    border-radius: 4px;
+    background-color: #666; /* Karanlık giriş arka planı */
+    color: #fff; /* Giriş yazı rengi */
+  }
+  
+  #calculatorResults {
+    border-top: 1px solid #555; /* Sonuçlar bölümündeki üst sınır */
+    padding-top: 15px;
+    margin-top: 15px;
+  }
+  
+  #calculatorResults p {
+    margin: 5px 0;
+  }
+  
+  #calculatorResults ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
