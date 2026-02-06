@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'admin/css/styles.css' %}">
+    <title>IP Listesi</title>
+    <script src="{% static 'admin/js/scripts.js' %}"></script>
+    <script src="{% static 'admin/js/ui_ping.js' %}"></script>
+    
+</head>
+<body>
+    <h1>IP Adresleri</h1>
+    
+    <br>
+
+    <form method="get" action="{% url 'ip_list_view' %}">
+        <label for="search">Aranacak Veriyi Giriniz:</label>
+        <input type="text" id="search" name="search" value="{{ request.GET.search }}">
+        <button type="submit">Ara</button>
+    </form>
+    
+<br>
+
+    <!-- Toplu Ping testi butonu -->
+    <form method="post" id="ping-form">
+        {% csrf_token %}
+        <button type="button" id="ping-button">Toplu Ping Testi Yap</button>
+    </form>
+    <br>
+
+    <!-- IP adreslerinin detaylarını gösteren form -->
+    <form method="post" id="ip-status-form" action="{% url 'check_ip_status' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <table>
+            <thead>
+                <tr>
+                    
+                    <th>Durumu</th>
+                    <th>Ping Butonu</th>
+                    <th>Ping</th>
+                    <th>IP Adresi</th>
+                    <th>Cihaz Adı</th>
+                    <th>Konumu</th>
+                    <th>Backbone</th>
+                    <th>Alt Router</th>
+                    <th>SSID</th>
+                    <th>Cihaz</th>
+                    <th>Seri No</th>
+                    <th>Mac</th>
+                    <th>User</th>
+                    <th>Create Date</th>
+                    <th>Update Time</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% if ip_addresses %}
+                    {% for ip in ip_addresses %}
+                    <tr data-ip="{{ ip.ip_address }}">
+                        
+                        <td>{{ ip.status }}</td>
+                        <td><button type="button" class="ping-button" data-ip="{{ ip.ip_address }}">Ping At</button></td>
+                        <td class="ping-status">
+                            <span class="{% if ip.ping == 'Evet' %}ping-yes{% elif ip.ping == 'Hayır' %}ping-no{% else %}ping-unknown{% endif %}">
+                                {% if ip.ping == 'Evet' %}Evet{% elif ip.ping == 'Hayır' %}Hayır{% else %}&nbsp;{% endif %}
+                            </span>
+                        </td>
+                        <td class="ip-address">{{ ip.ip_address }}</td>
+                        <td>{{ ip.device_name }}</td>
+                        <td>{{ ip.location }}</td>
+                        <td>{{ ip.backbone }}</td>
+                        <td>{{ ip.alt_router }}</td>
+                        <td>{{ ip.ssid }}</td>
+                        <td>{{ ip.device }}</td>
+                        <td>{{ ip.seri_no }}</td>
+                        <td>{{ ip.mac }}</td>
+                        <td>{{ ip.user }}</td>
+                        <td>{{ ip.created_at }}</td>
+                        <td>{{ ip.updated_at }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="14">Aramanıza uygun sonuç bulunamadı.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+            
+        </table>
+        <br>
+    </form>
+
+   
+</body>
+</html>

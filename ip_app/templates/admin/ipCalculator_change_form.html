@@ -1,0 +1,194 @@
+{% extends "admin/change_form.html" %}
+
+{% block content %}
+  <!-- IP Hesaplayıcı Butonu -->
+  <div style="margin-bottom: 20px;">
+    <button type="button" class="button" onclick="openCalculator()">Open IP Calculator</button>
+  </div>
+
+  {{ block.super }}
+
+  <!-- Modal -->
+  <div id="calculatorModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCalculator()">&times;</span>
+      <h2>IP Address Calculator</h2>
+      <form id="calculatorForm" method="post" action="{% url 'ip_calculator' %}">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="ip_address">IP Address:</label>
+          <input type="text" id="ip_address" name="ip_address" required class="form-control" placeholder="e.g. 10.5.50.0">
+        </div>
+        <div class="form-group">
+          <label for="subnet">Subnet Mask:</label>
+          <input type="text" id="subnet" name="subnet" required class="form-control" placeholder="e.g. 24">
+        </div>
+        <button type="submit" class="button">Calculate</button>
+      </form>
+
+      <!-- Sonuçlar -->
+      <div id="calculatorResults" style="display:none; margin-top: 20px;">
+        <h3>Results:</h3>
+        <p><strong>Total IP Addresses:</strong> <span id="totalIps">N/A</span></p>
+        <p><strong>Subnet Address:</strong> <span id="subnetAddress">N/A</span></p>
+        <p><strong>Gateway Address:</strong> <span id="gatewayAddress">N/A</span></p>
+        <h4>Calculated IPs:</h4>
+        <ul id="calculatedIps"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- CSS -->
+  <style>
+    :root {
+      --modal-background-color-light: #f4f4f4;
+      --modal-background-color-dark: #333;
+      --text-color-light: #000000;
+      --text-color-dark: #ffffff;
+    }
+    
+    [data-theme='light'] {
+      --modal-background-color: var(--modal-background-color-light);
+      --text-color: var(--text-color-light);
+    }
+    
+    [data-theme='dark'] {
+      --modal-background-color: var(--modal-background-color-dark);
+      --text-color: var(--text-color-dark);
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      background-color: var(--modal-background-color);
+      border: 1px solid #ccc;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .modal-content {
+      max-height: 80vh;
+      overflow-y: auto;
+      background-color: var(--modal-background-color);
+      color: var(--text-color);
+      padding: 20px;
+      border-radius: 8px;
+    }
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    
+    .close:hover,
+    .close:focus {
+      color: #000;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    
+    #calculatorResults {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 15px;
+      color: var(--text-color);
+    }
+    
+    #calculatorResults p {
+      margin: 5px 0;
+      color: var(--text-color);
+    }
+    
+    #calculatorResults ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      color: var(--text-color);
+    }
+  </style>
+
+  <!-- JavaScript -->
+  <script type="text/javascript">
+    function openCalculator() {
+      var modal = document.getElementById('calculatorModal');
+      var body = document.body;
+    
+      // Varsayılan arka plan rengini al
+      var backgroundColor = window.getComputedStyle(body).backgroundColor;
+    
+      // Modal'ın arka plan rengini ayarla
+      modal.style.backgroundColor = backgroundColor;
+    
+      // Modal'ı göster
+      modal.style.display = 'block';
+      
+      // Temaya uygun renkleri güncelle
+      var textColor = window.getComputedStyle(body).getPropertyValue('--text-color');
+      document.querySelectorAll('.modal-content, #calculatorResults').forEach(el => {
+        el.style.color = textColor;
+      });
+    }
+    
+    function closeCalculator() {
+      document.getElementById('calculatorModal').style.display = 'none';
+      document.getElementById('calculatorForm').reset();
+      document.getElementById('calculatorResults').style.display = 'none';
+    }
+  
+    document.getElementById('calculatorForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+  
+      var form = this;
+  
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('calculatorResults').style.display = 'block';
+        document.getElementById('totalIps').textContent = data.total_ips || 'N/A';
+        document.getElementById('subnetAddress').textContent = data.subnet_address || 'N/A';
+        document.getElementById('gatewayAddress').textContent = data.gateway_address || 'N/A';
+        var ipList = document.getElementById('calculatedIps');
+        ipList.innerHTML = '';
+        if (data.calculated_ips && data.calculated_ips.length > 0) {
+          data.calculated_ips.forEach(ip => {
+            var li = document.createElement('li');
+            li.textContent = ip;
+            ipList.appendChild(li);
+          });
+        } else {
+          ipList.innerHTML = '<li>No IP addresses found.</li>';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    });
+</script>
+
+
+
+{% endblock %}
